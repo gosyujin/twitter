@@ -55,7 +55,7 @@ end
 # 自分のタイムライン取得用のURL
 home_timeline_url = "http://api.twitter.com/1/statuses/home_timeline.json"
 
-twitter = Pit.get("tweetget", :require => {
+twitter = Pit.get("twitter", :require => {
 	# Twitterで登録したらもらえる
 	"consumer_key" => "your consumer_key", 
 	"consumer_secret" => "your consumer_secret", 
