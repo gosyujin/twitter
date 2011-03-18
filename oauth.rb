@@ -56,7 +56,7 @@ authorize_url = "http://twitter.com/oauth/authorize"
 access_token_url = "http://twitter.com/oauth/access_token"
 
 # Twitterで登録したらもらえる
-consumer = Pit.get("oauth", :require => {
+consumer = Pit.get("twitter", :require => {
 	"consumer_key" => "your consumer_key",
 	"consumer_secret" => "your consumer_secret"
 })
