@@ -142,11 +142,11 @@ http.start do |http|
 					
 					if res.code == "200" then
 						print "#{jsonparse[i]["screen_name"]} follow now!\n"
+						sleep(1)
 					else
 						print "#{res.code} #{jsonparse[i]["id"]}:#{jsonparse[i]["screen_name"]}\n"
 					end
 				end
-			
 			end
 		end
 	else
