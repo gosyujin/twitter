@@ -1,10 +1,8 @@
 # encoding: utf-8
 require 'rubygems'
 require 'pit'
-require 'ruby-growl'
 require 'net/http'
 require 'oauth'
-require 'cgi'
 require 'json'
 # friends: フォローしている, follower: フォローされている
 
