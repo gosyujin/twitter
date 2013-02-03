@@ -30,7 +30,7 @@ uri = URI.parse('https://userstream.twitter.com/2/user.json')
 
 https = Net::HTTP::Proxy(ENV["PROXY"], 8080).new(uri.host, 443)
 https.use_ssl = true
-https.ca_file = './ca.crt'
+https.ca_file = './verisign.cer'
 https.verify_mode = OpenSSL::SSL::VERIFY_PEER
 https.verify_depth = 5
 
@@ -40,19 +40,22 @@ https.start do |https|
   https.request(request) do |response|
     response.read_body do |chunk|
       buf = chunk
-#      growl = Growl.new("localhost", "MyUsSt", ["Message", "Error"])
+      # growl = Growl.new("localhost", "MyUsSt", ["Message", "Error"])
       begin
         status = JSON.parse(buf.strip)
         if status['text'] then
-#          growl.notify "Message", "#{status['user']['screen_name']}", "#{status['text']}" 
-          puts "■#{status['user']['screen_name']}: \n#{status['text']}\n--------"
+          # growl.notify "Message", "#{status['user']['screen_name']}", "#{status['text']}" 
+          puts "--------"
+          puts "■#{status['user']['screen_name']}:"
+          puts "#{status['text']}"
+          # puts ">> #{status['in_reply_to_status_id']}"
         end
       rescue EOFError => ex
-#        growl.notify "Error", "Error", "#{ex}" 
+        # growl.notify "Error", "Error", "#{ex}" 
         puts "EOF E"
       rescue JSON::ParserError => ex
-#        growl.notify "Error", "Error", "#{ex}" 
-        puts "JSON P"
+        # growl.notify "Error", "Error", "#{ex}" 
+        print "."
       end
     end
   end
