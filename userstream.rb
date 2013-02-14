@@ -7,7 +7,7 @@ require 'oauth'
 require 'cgi'
 require 'json'
 
-core = Pit.get("twitter", :require => {
+core = Pit.get("twitter_kk", :require => {
   "consumer_key" => "your consumer_key",
   "consumer_secret" => "your consumer_secret",
   "oauth_token" => "your oauth_token",
@@ -55,7 +55,7 @@ https.start do |https|
         puts "EOF E"
       rescue JSON::ParserError => ex
         # growl.notify "Error", "Error", "#{ex}" 
-        print "."
+        print "-"
       end
     end
   end
