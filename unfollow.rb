@@ -8,7 +8,7 @@ require 'json'
 
 def all_ids(end_point)
   sleep(1)
-  uri = URI.parse("http://api.twitter.com/1/#{end_point}/ids.json")
+  uri = URI.parse("http://api.twitter.com/1.1/#{end_point}/ids.json")
   proxy_class = Net::HTTP::Proxy(ENV["PROXY"], 8080)
   http = proxy_class.new(uri.host)
   http.start do |http|
@@ -28,7 +28,7 @@ end
 
 def user(user_id)
   sleep(1)
-  uri = URI.parse("http://api.twitter.com/1/users/show.json")
+  uri = URI.parse("http://api.twitter.com/1.1/users/show.json")
   proxy_class = Net::HTTP::Proxy(ENV["PROXY"], 8080)
   http = proxy_class.new(uri.host)
   http.start do |http|
@@ -36,9 +36,9 @@ def user(user_id)
     request.oauth!(http, @consumer, @access_token) # OAuthで認証
     http.request(request) do |response|
       if response.code == "200" then
+        puts response.code
         return JSON.parse(response.body)
       else
-        puts response.code
         puts response.body
         exit 1
       end
@@ -48,7 +48,7 @@ end
 
 def destroy_follow(screen_name)
   sleep(1)
-  uri = URI.parse("http://api.twitter.com/1/friendships/destroy.json")
+  uri = URI.parse("http://api.twitter.com/1.1/friendships/destroy.json")
   proxy_class = Net::HTTP::Proxy(ENV["PROXY"], 8080)
   http = proxy_class.new(uri.host)
   http.start do |http|
