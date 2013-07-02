@@ -1,10 +1,16 @@
-source :rubygems
-source "http://rubygems.org"
+source 'https://rubygems.org'
+
+# Specify your gem's dependencies in twitter_cui.gemspec
+gemspec
 
 gem 'pit'
-#gem 'ZenTest'
-#gem 'userstream'
-#gem 'sinatra'
+gem 'thor'
 gem 'oauth'
 gem 'twitter'
-gem 'ruby-growl', '~> 3.0'
+
+group :growl do
+  gem 'ruby-growl'
+end
+group :test do
+  gem 'rspec'
+end
