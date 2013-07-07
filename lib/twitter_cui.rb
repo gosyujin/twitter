@@ -1,5 +1,6 @@
 #! -*- encoding: utf-8 -*-
 require "twitter_cui/version"
+require "twitter_cui/api_url"
 
 require 'pit'
 require 'oauth'
@@ -9,29 +10,14 @@ require 'json'
 
 module TwitterCui
   class CLI < Thor
-    class_option :help, :type => :boolean, :aliases => '-h', :desc => "twitter_cui help"
+    include Api_Url
 
-    # end_point
-    Domain = "https://api.twitter.com"
-    Api_Version = "1.1"
-    Api_Url = "#{Domain}/#{Api_Version}"
+    Config = YAML.load_file("_config.yml")
+    require 'pp' ; pp Config
 
-    User_Timeline       = "#{Api_Url}/statuses/user_timeline.json"
-    Home_Timeline       = "#{Api_Url}/statuses/home_timeline.json"
-    Mentions_Timeline   = "#{Api_Url}/statuses/mentions_timeline.json"
-    Statuses_Update     = "#{Api_Url}/statuses/update.json"
-    Followers_List      = "#{Api_Url}/followers/list.json"
-    Followers_Ids       = "#{Api_Url}/followers/ids.json"
-    Users_Show          = "#{Api_Url}/users/show.json"
-    Friends_Ids         = "#{Api_Url}/friends/ids.json"
-    Friendships_Create  = "#{Api_Url}/friendships/create.json"
-    Friendships_Destroy = "#{Api_Url}/friendships/destroy.json"
-
-    User_Stream = "https://userstream.twitter.com/2/user.json"
-
-    # FIXME
-    Pit_Id = "twitter_kk"
-    Ca_Path = "lib/twitter_cui/cacert.pem"
+    Pit_Id = Config["pit_id"]
+    Ca_Path = Config["cer_file_path"]
+    Ng_Array = Config["ng_word"]
 
     # consumer_key, secret, access_token, secret
     Core = Pit.get(Pit_Id)
@@ -45,6 +31,8 @@ module TwitterCui
       Core["oauth_token"],
       Core["oauth_token_secret"]
     )
+
+    class_option :help, :type => :boolean, :aliases => '-h', :desc => "twitter_cui help"
 
     desc "[g|get] [-m|-s]", "get recent user timeline"
     option :own,     :type => :boolean, :aliases => '-o', :desc => "get own tweet"
@@ -67,7 +55,7 @@ module TwitterCui
 
     desc "[t|tweet]", "next, input tweet and enter"
     def tweet(text)
-      d = attack(:POST, "#{Statuses_Update}?status=#{URI.escape(text)}")
+      d = attack(:POST, "#{Statuses_Update}?status=#{URI.escape(text)}") unless ng?(text.encode("UTF-8"))
     end
 
     desc "[r|reply]", "next, select in_reply_to tweet and input tweet and enter"
@@ -99,6 +87,17 @@ private
         out << "-------------------------------------------------"
         puts out
       end
+    end
+
+    def ng?(text)
+      Ng_Array.each do |ng|
+        if text.match(/#{ng}/) then
+          puts "Warn: NG WORD: '#{ng}'"
+          return true
+        end
+      end
+      puts "OK"
+      return false
     end
 
     def ca_file

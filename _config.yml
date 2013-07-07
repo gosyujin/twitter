@@ -1,0 +1,14 @@
+pit_id: twitter
+cer_file_path: ./lib/twitter_cui/ca.crt
+
+
+ng_word: [
+  拝承
+  , 拝復
+  , 多謝
+  , UOC
+  , EUR Professional
+  , B票
+  , 以上、ご査収の程お願いしたく。
+  , "ho,ge,ru" # require " " when include comma
+]
