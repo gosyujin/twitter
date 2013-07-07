@@ -34,7 +34,7 @@ module TwitterCui
 
     class_option :help, :type => :boolean, :aliases => '-h', :desc => "twitter_cui help"
 
-    desc "[g|get] [-m|-s]", "get recent user timeline"
+    desc "[g|get] [-o|-m|-s]", "get recent user timeline"
     option :own,     :type => :boolean, :aliases => '-o', :desc => "get own tweet"
     option :mention, :type => :boolean, :aliases => '-m', :desc => "get resent mentions"
     option :stream,  :type => :boolean, :aliases => '-s', :desc => "start connect usestream"
